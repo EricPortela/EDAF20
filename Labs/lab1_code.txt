@@ -1,0 +1,216 @@
+a) 
+
+select firstName, lastName 
+from Students;
+
+
+b)
+
+select firstName, lastName 
+from Students 
+order by lastName, firstName;
+
+
+c) 
+
+select * 
+from Students 
+where LEFT(pNbr, 2) = 75; //Takes the two first chars
+
+
+d) 
+
+select * 
+from Students 
+where mod(substr(pNbr,10,1),2)=0;
+
+//substr([param1], [param2], [param3])
+//param1 - str
+//param2 - index
+//param3 - amount of chars after index
+
+
+e) 
+
+select count(*)
+from Students;
+
+
+f)
+
+select * 
+from Courses 
+where LEFT(courseCode, 3) = "FMA";
+
+
+g) 
+
+select * 
+from Courses 
+where credits > 5;
+
+
+h) 
+
+select * 
+from TakenCourses 
+where pNbr = "790101-1234";
+
+
+i) 
+
+select courseName, credits 
+from Courses 
+where courseCode in
+	(select courseCode
+	from TakenCourses 
+	where pNbr = "790101-1234");
+
+
+j)
+
+select sum(credits) 
+from Courses 
+where courseCode in 
+
+	(select courseCode 
+	from TakenCourses 
+	where pNbr = "790101-1234");
+
+
+k)
+
+select avg(grade) 
+from TakenCourses 
+where pNbr = "790101-1234";
+
+
+L) ------------------------------------------------------------------------------------------------------------------
+
+select courseCode 
+from TakenCourses 
+where pNbr in 
+	(select pNbr 
+	from Students 
+	where 
+	concat(firstName, lastName) = "EvaAlm");
+
+
+select courseName, credits 
+from Courses
+where courseCode in
+	(select courseCode 
+	from TakenCourses
+	where pNbr in 
+		(select pNbr 
+		from Students 
+		where concat(firstName, lastName) = "EvaAlm"));
+
+
+select sum(credits)                                                                                                                         -> from Courses
+where courseCode in
+	(select courseCode
+	from TakenCourses
+	where pNbr in 
+		(select pNbr 
+		from Students
+		where concat(firstName, lastName)="EvaAlm"));
+	
+------------------------------------------------------------------------------------------------------------------
+
+M)
+
+select * 
+from Students 
+where pNbr not in
+	(select pNbr 
+	from TakenCourses);
+
+
+N)
+
+//STEP 1 - CREATE A VIEW 
+
+create view Average as
+select pNbr, avg(grade) as avg
+from TakenCourses
+group by pNbr
+
+
+//STEP 2 - LIST AND ORDER BY AVG (DESCENDING ORDER)
+select *
+from Average 
+order by avg desc
+
+
+O)
+
+//STEP 1 - CREATE VIEW
+
+create view view1 as
+select Students.pNbr, Students.firstName, Students.lastName, Courses.credits
+from Students left join TakenCourses
+on Students.pNbr = TakenCourses.pNbr 
+left join Courses 
+on Courses.courseCode = TakenCourses.courseCode;
+
+
+//STEP 2 - RETURN LIST WITH pNbr and SUM OF EACH PERSONS credits
+//https://www.w3schools.com/mysql/mysql_groupby.asp
+
++-------------------------------------------------------------------------------------------------------------+
+| //OBS! The GROUP BY statement is often used with aggregate functions (COUNT(), MAX(), MIN(), SUM(), AVG())  |
+| to group the result-set by one or more columns.															  |
++-------------------------------------------------------------------------------------------------------------+
+
+select pNbr, sum(credits)
+from view1
+group by pNbr
+
+
+P)
+
+STEP 1 - SAME AS IN O)
+
+STEP 2
+
+select firstName, lastName, credits
+from view1
+group by pNbr
+
+
+
+
+Q) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
